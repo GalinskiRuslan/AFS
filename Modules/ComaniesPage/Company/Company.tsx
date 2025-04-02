@@ -2,7 +2,7 @@
 import cl from "./company.module.css";
 import { observer } from "mobx-react-lite";
 import { appStore } from "@/store/store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import bigPencil from "@/public/imgs/Pencil (1).svg";
 import trash from "@/public/imgs/Trash.svg";
 import Image from "next/image";
@@ -16,6 +16,9 @@ export const Company = observer(() => {
   const [comName, setComName] = useState(company?.name || "");
   const [visible, setVisible] = useState(false);
 
+  useEffect(() => {
+    appStore.fetchCompanyWithId(12);
+  }, []);
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {

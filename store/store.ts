@@ -41,58 +41,8 @@ interface Company {
 export class AppStore {
   isAuth: boolean = false;
   companies: Company[] = [];
-  //   company: Company | null = null;
-  company: Company | null = {
-    id: "12",
-    contactId: "16",
-    name: "Eternal Rest Funeral Home",
-    shortName: "ERFH",
-    businessEntity: "Partnership",
-    contract: {
-      no: "1624/2-24",
-      issue_date: new Date("2024-03-12T00:00:00Z"),
-    },
-    type: ["funeral_home", "logistics_services"],
-    status: Status.active,
-    createdAt: new Date("2024-11-21T08:03:00Z"),
-    updatedAt: new Date("2024-11-23T09:30:00Z"),
-    photos: [
-      {
-        name: "7e6034a0bcf8670c10ef4e2cc05d0334.jpg",
-        filepath:
-          "https://test-task-api.allfuneral.com/7e6034a0bcf8670c10ef4e2cc05d0334.jpg",
-        thumbpath:
-          "https://test-task-api.allfuneral.com/7e6034a0bcf8670c10ef4e2cc05d0334-thumb.jpg",
-        createdAt: new Date("2024-12-17T08:00:00Z"),
-      },
-      {
-        name: "1e534fc26a643695eceb5992f968bcc6.jpg",
-        filepath:
-          "https://test-task-api.allfuneral.com/1e534fc26a643695eceb5992f968bcc6.jpg",
-        thumbpath:
-          "https://test-task-api.allfuneral.com/1e534fc26a643695eceb5992f968bcc6-thumb.jpg",
-        createdAt: new Date("2024-12-17T08:00:00Z"),
-      },
-      {
-        name: "d93655769ad9ad3922797ef1a78f979f.jpg",
-        filepath:
-          "https://test-task-api.allfuneral.com/d93655769ad9ad3922797ef1a78f979f.jpg",
-        thumbpath:
-          "https://test-task-api.allfuneral.com/d93655769ad9ad3922797ef1a78f979f-thumb.jpg",
-        createdAt: new Date("2024-12-22T08:00:00Z"),
-      },
-    ],
-  };
-  //   contact: Contact | null = null;
-  contact: Contact = {
-    id: "16",
-    lastname: "Rosenberg",
-    firstname: "David",
-    phone: "17025552345",
-    email: "david_rosenberg88@gmail.com",
-    createdAt: new Date("2024-11-21T08:03:26.589Z"),
-    updatedAt: new Date("2024-11-23T09:30:00Z"),
-  };
+  company: Company | null = null;
+  contact: Contact | null = null;
   loading: boolean = false;
   error: string | null = null;
 
@@ -135,6 +85,7 @@ export class AppStore {
           this.loading = false;
         });
       }
+      this.fetchContactWithId(Number(res.data.contactId));
     } catch (err) {
       runInAction(() => {
         this.error = "Ошибка загрузки компаний";
@@ -196,7 +147,7 @@ export class AppStore {
       const res = await $axios.get(`/contacts/${id}`);
       if (res.status === 200) {
         runInAction(() => {
-          this.company = res.data;
+          this.contact = res.data;
           this.loading = false;
         });
       }
@@ -222,7 +173,7 @@ export class AppStore {
       const res = await $axios.patch(`/contacts/${id}`, {
         ...data,
         id,
-        createdAt: this.contact.createdAt,
+        createdAt: this.contact?.createdAt,
         updatedAt: new Date(),
       });
       if (res.status === 200) {
@@ -241,12 +192,21 @@ export class AppStore {
   async postImg(id: number, img: File) {
     this.loading = true;
     this.error = null;
-    const res = await $axios.post(`/companies/${id}/image`, img, {
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-    if (res.status === 200) {
+    try {
+      const formData = new FormData();
+      formData.append("file", img);
+      const res = await $axios.post(`/companies/${id}/image`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      if (res.status === 200) {
+        runInAction(() => {
+          this.company?.photos.push(res.data);
+          this.loading = false;
+        });
+      }
+    } catch (err) {
       runInAction(() => {
-        this.company?.photos.push(res.data);
+        this.error = "Ошибка загрузки фото";
         this.loading = false;
       });
     }
@@ -254,9 +214,24 @@ export class AppStore {
   async deleteImg(id: number, name: string) {
     this.loading = true;
     this.error = null;
-    const res = await $axios.delete(`/companies/${id}/image/${name}`);
-    if (res.status === 200) {
+    try {
+      const res = await $axios.delete(`/companies/${id}/image/${name}`);
+      if (res.status === 200) {
+        runInAction(() => {
+          this.loading = false;
+          if (this.company?.photos) {
+            const indexToRemove = this.company.photos.findIndex(
+              (photo) => photo.name === name
+            );
+            if (indexToRemove !== -1) {
+              this.company.photos.splice(indexToRemove, 1);
+            }
+          }
+        });
+      }
+    } catch (err) {
       runInAction(() => {
+        this.error = "Ошибка удаления фото";
         this.loading = false;
       });
     }

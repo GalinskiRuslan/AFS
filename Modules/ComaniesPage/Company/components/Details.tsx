@@ -23,10 +23,10 @@ export const Details = () => {
     return <p>Loading company details...</p>;
   }
   const [formData, setFormData] = useState({
-    agreement: company.contract.no,
-    issueDate: dayjs(company.contract.issue_date).format("YYYY-MM-DD"),
+    agreement: company.contract?.no ? company.contract.no : "",
+    issueDate: dayjs(company.contract?.issue_date).format("YYYY-MM-DD"),
     businessEntity: company.businessEntity,
-    type: company?.type.join(", "),
+    type: company?.type?.join(", "),
   });
 
   const handleChange = (

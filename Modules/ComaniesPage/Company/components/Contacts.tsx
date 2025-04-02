@@ -3,34 +3,43 @@ import { appStore } from "@/store/store";
 import cl from "../company.module.css";
 import Image from "next/image";
 import pencil from "@/public/imgs/Pencil.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import cancel from "@/public/imgs/X.svg";
 import check from "@/public/imgs/Check.svg";
+import { observer } from "mobx-react-lite";
 
-export const Contacts = () => {
+export const Contacts = observer(() => {
   const { contact } = appStore;
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
-    firstname: contact?.firstname || "",
-    lastname: contact?.lastname || "",
-    phone: contact?.phone || "",
-    email: contact?.email || "",
+    firstname: "",
+    lastname: "",
+    phone: "",
+    email: "",
   });
+
+  // Загружаем данные в formData при изменении contact
+  useEffect(() => {
+    if (contact) {
+      setFormData({
+        firstname: contact.firstname || "",
+        lastname: contact.lastname || "",
+        phone: contact.phone || "",
+        email: contact.email || "",
+      });
+    }
+  }, [contact]);
 
   if (!contact) {
     return <p>Loading contact details...</p>;
   }
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    if (name === "phone") {
-      const numericValue = value.replace(/\D/g, "");
-      setFormData((prev) => ({ ...prev, [name]: numericValue }));
-    } else {
-      setFormData((prev) => ({ ...prev, [name]: value }));
-    }
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "phone" ? value.replace(/\D/g, "") : value,
+    }));
   };
 
   const handleSave = () => {
@@ -40,10 +49,10 @@ export const Contacts = () => {
 
   const handleCancel = () => {
     setFormData({
-      firstname: contact.firstname,
-      lastname: contact.lastname,
-      phone: contact.phone,
-      email: contact.email,
+      firstname: contact.firstname || "",
+      lastname: contact.lastname || "",
+      phone: contact.phone || "",
+      email: contact.email || "",
     });
     setIsEditing(false);
   };
@@ -85,7 +94,7 @@ export const Contacts = () => {
                   value={formData.firstname}
                   onChange={handleChange}
                 />
-                <span className={cl.contentText}>lastname:</span>
+                <span className={cl.contentText}>Lastname:</span>
                 <input
                   className={cl.input}
                   name="lastname"
@@ -116,10 +125,12 @@ export const Contacts = () => {
                 {formData.firstname} {formData.lastname}
               </p>
               <p className={cl.conentTextR}>
-                {formData.phone.replace(
-                  /(\d{1})(\d{3})(\d{3})(\d{4})/,
-                  "+$1 $2 $3 $4"
-                )}
+                {formData.phone
+                  ? formData.phone.replace(
+                      /(\d{1})(\d{3})(\d{3})(\d{4})/,
+                      "+$1 $2 $3 $4"
+                    )
+                  : ""}
               </p>
               <p className={cl.conentTextR}>{formData.email}</p>
             </>
@@ -128,4 +139,4 @@ export const Contacts = () => {
       </div>
     </div>
   );
-};
+});
