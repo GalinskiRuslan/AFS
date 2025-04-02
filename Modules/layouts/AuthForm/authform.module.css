@@ -1,0 +1,15 @@
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 12px 0;
+}
+.input {
+  font-size: 14px;
+  border-radius: 8px;
+}
+.submit {
+  border-radius: 8px;
+  background: #3b3b3b;
+  color: #fff;
+  padding: 8px 12px;
+}

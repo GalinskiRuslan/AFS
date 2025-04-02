@@ -8,8 +8,12 @@ export default function Home() {
   useEffect(() => {
     setToken(localStorage.getItem("token"));
   }, []);
-  if (token) {
-    return <AuthForm />;
+  if (!token) {
+    return (
+      <div className={styles.page}>
+        <AuthForm />
+      </div>
+    );
   }
   return (
     <div className={styles.page}>
