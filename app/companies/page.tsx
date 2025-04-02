@@ -2,18 +2,22 @@
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Company } from "@/Modules/ComaniesPage/Company/Company";
-import { AuthForm } from "@/Modules/layouts/AuthForm/AuthForm";
 
 export default function Companies() {
-  const token =
-    typeof window !== "undefined" ? localStorage.getItem("token") : null;
   const router = useRouter();
+  const [token, setToken] = useState<string | null>(null);
+
   useEffect(() => {
-    if (!token) {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+
+    if (!storedToken) {
       router.push("/");
     }
-  }, [token]);
+  }, []);
+
   if (!token) return null;
+
   return (
     <div className="content">
       <Company />
