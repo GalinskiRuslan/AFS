@@ -1,0 +1,159 @@
+.container {
+  margin-top: 40px;
+}
+.transperentBtn {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+}
+.title {
+  font-size: 28px;
+  font-weight: 500;
+}
+.flexTitle {
+  display: flex;
+  justify-content: space-between;
+  padding-bottom: 16px;
+}
+.buttons {
+  display: flex;
+  gap: 4px;
+}
+.itemTitle {
+  font-size: 14px;
+  font-weight: 700;
+}
+.item {
+  border-radius: 16px;
+  background: #fff;
+  padding: 24px;
+  margin: 16px 0;
+}
+.content {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr;
+}
+.contentText {
+  font-size: 13px;
+  height: 32px;
+  opacity: 0.5;
+}
+.conentTextR {
+  font-size: 14px;
+  height: 32px;
+}
+.editBtn {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 8px;
+  padding: 6px 8px;
+  background: transparent;
+  cursor: pointer;
+}
+.photo {
+  border-radius: 10px;
+}
+.photos {
+  display: flex;
+  gap: 12px;
+  max-width: 100%;
+  overflow: auto;
+}
+.photoContainer {
+  position: relative;
+}
+.deleteBtn {
+  position: absolute;
+  right: 14px;
+  top: 14px;
+  border: none;
+  background: var(--brandprimary);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 8px;
+}
+.inputItem {
+  height: 32px;
+}
+.inputItemFirst {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  height: 32px;
+  padding-bottom: 4px;
+  align-items: center;
+}
+.inputItemFirst input {
+  width: 100%;
+  font-size: 13px;
+  padding: 5px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.inputItem input {
+  width: 100%;
+  font-size: 13px;
+  padding: 5px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.inputItem select {
+  width: 100%;
+  font-size: 13px;
+  padding: 5px;
+  border-radius: 8px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.inputItemFirst span {
+  height: auto;
+}
+.btnGroup {
+  display: flex;
+  gap: 12px;
+}
+.modalTitle {
+  font-size: 14px;
+  font-weight: 700;
+  text-align: center;
+}
+.modalText {
+  font-size: 13px;
+  text-align: center;
+  margin-top: 13px;
+}
+.primaryBtn {
+  background: var(--brandprimary);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 10px 0;
+  width: 150px;
+  cursor: pointer;
+}
+.modalButtons {
+  display: flex;
+  gap: 16px;
+  margin-top: 24px;
+}
+.inhBtn {
+  background: transparent;
+  color: #000;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 8px;
+  padding: 10px 0;
+  width: 150px;
+  cursor: pointer;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+.modalContainer input {
+  width: 100%;
+  font-size: 14px;
+  padding: 10px;
+  margin: 24px 0;
+}
