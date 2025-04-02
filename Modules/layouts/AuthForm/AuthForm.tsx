@@ -2,7 +2,7 @@
 import { observer } from "mobx-react-lite";
 import { appStore } from "@/store/store";
 import { useState } from "react";
-import cl from "./authForm.module.css";
+import cl from "./authform.module.css";
 export const AuthForm: React.FC = observer(() => {
   const [name, setName] = useState<string>("");
   return (

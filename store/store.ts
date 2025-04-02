@@ -236,6 +236,19 @@ export class AppStore {
       });
     }
   }
+  async postImg(id: number, img: File) {
+    this.loading = true;
+    this.error = null;
+    const res = await $axios.post(`/companies/${id}/image`, img, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+    if (res.status === 200) {
+      runInAction(() => {
+        this.company?.photos.push(res.data);
+        this.loading = false;
+      });
+    }
+  }
 }
 
 export const appStore = new AppStore();
