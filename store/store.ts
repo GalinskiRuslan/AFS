@@ -249,6 +249,16 @@ export class AppStore {
       });
     }
   }
+  async deleteImg(id: number, name: string) {
+    this.loading = true;
+    this.error = null;
+    const res = await $axios.delete(`/companies/${id}/image/${name}`);
+    if (res.status === 200) {
+      runInAction(() => {
+        this.loading = false;
+      });
+    }
+  }
 }
 
 export const appStore = new AppStore();

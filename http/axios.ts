@@ -52,7 +52,6 @@ $axios.interceptors.response.use(
 );
 $axios.interceptors.request.use((config) => {
   config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
-  config.headers.newversion = "yes";
   return config;
 });
 
