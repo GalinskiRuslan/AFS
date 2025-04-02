@@ -1,5 +1,6 @@
 import $axios from "@/http/axios";
 import { makeAutoObservable, runInAction } from "mobx";
+import { useRouter } from "next/navigation";
 
 enum Status {
   "active",
@@ -99,7 +100,7 @@ export class AppStore {
     makeAutoObservable(this);
   }
 
-  async fetchAuth(userName: string) {
+  async fetchAuth(userName: string, router: ReturnType<typeof useRouter>) {
     this.loading = true;
     this.error = null;
     try {
@@ -115,6 +116,7 @@ export class AppStore {
         this.isAuth = true;
         this.loading = false;
       });
+      router.push("/companies");
     } catch (err) {
       runInAction(() => {
         this.error = "Ошибка загрузки пользователей";
